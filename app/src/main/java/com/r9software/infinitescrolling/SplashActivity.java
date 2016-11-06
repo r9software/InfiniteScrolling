@@ -34,9 +34,7 @@ import okhttp3.Response;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static final String AUTH_COOKIE = "__dev.waldo.auth__";
     private Handler mHandler = new Handler();
-    private String DB_PATH;
     private static final String QUERY = "query={" +
             " album(id: \"YWxidW06ZjNjNWE4ZTQtMzRhNy00NWI0LWFmZGQtOTIxNTJhZmNmZTgz\") {\n" +
             "    id\n" +
@@ -55,7 +53,6 @@ public class SplashActivity extends AppCompatActivity {
             "    }\n" +
             "  }\n" +
             "}\n";
-    private String DB_NAME = "database.db";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +64,6 @@ public class SplashActivity extends AppCompatActivity {
     private void initParams() {
         SQLiteDatabaseHelper.init(getApplicationContext());
         final PhotosSqliteImpl dao = new PhotosSqliteImpl();
-        DB_PATH = getFilesDir().getAbsolutePath() + "/databases/";
         hideActionBar();
         mHandler.post(new Runnable() {
                           @Override
