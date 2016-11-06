@@ -1,0 +1,30 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0099cc"
+    tools:context="com.r9software.infinitescrolling.SplashActivity">
+
+    <ProgressBar
+        android:id="@+id/locationProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="33dp" />
+
+    <TextView
+        android:id="@+id/fullscreen_content"
+        android:layout_width="350dp"
+        android:layout_height="300dp"
+        android:gravity="center"
+        android:keepScreenOn="true"
+        android:layout_centerInParent="true"
+        android:text="@string/loading"
+        android:textColor="@color/clearTextColor"
+        android:textSize="50sp"
+        android:textStyle="bold" />
+
+
+</RelativeLayout>
