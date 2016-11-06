@@ -13,6 +13,7 @@ import android.view.View;
 
 import com.r9software.infinitescrolling.dao.PhotosSqliteImpl;
 import com.r9software.infinitescrolling.dao.SQLiteDatabaseHelper;
+import com.r9software.infinitescrolling.util.Constants;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,24 +36,7 @@ import okhttp3.Response;
 public class SplashActivity extends AppCompatActivity {
 
     private Handler mHandler = new Handler();
-    private static final String QUERY = "query={" +
-            " album(id: \"YWxidW06ZjNjNWE4ZTQtMzRhNy00NWI0LWFmZGQtOTIxNTJhZmNmZTgz\") {\n" +
-            "    id\n" +
-            "    name\n" +
-            "    photos {\n" +
-            "      records {\n" +
-            "        urls {\n" +
-            "          size_code\n" +
-            "          url\n" +
-            "          width\n" +
-            "          height\n" +
-            "          quality\n" +
-            "          mime\n" +
-            "        }\n" +
-            "      }\n" +
-            "    }\n" +
-            "  }\n" +
-            "}\n";
+    private static final String QUERY = Constants.QUERY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,10 +72,10 @@ public class SplashActivity extends AppCompatActivity {
     OkHttpClient client = new OkHttpClient().newBuilder().build();
 
     private void downloadData() {
-        String url = "https://core-graphql.dev.waldo.photos/gql?" + QUERY;
+        String url =Constants.BASE_URL_API+ QUERY;
         Log.d(getClass().getSimpleName(), url);
         Request request = new Request.Builder()
-                .addHeader("Cookie", "__dev.waldo.auth__=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiZTBmYWRkODQtNGE3Ny00MzZkLWE0MmUtNWRmNzFlNTJlNTYxIiwicm9sZXMiOlsiYWRtaW5pc3RyYXRvciJdLCJpc3MiOiJ3YWxkbzpjb3JlIiwiZ3JhbnRzIjpbImFsYnVtczpkZWxldGU6KiIsImFsYnVtczpjcmVhdGU6KiIsImFsYnVtczplZGl0OioiLCJhbGJ1bXM6dmlldzoqIl0sImV4cCI6MTQ4MDk5MzQ1MywiaWF0IjoxNDc4NDAxNDUzfQ.AxYbPEtDtlTeSgS2MQMe_vK_1mXoLR6DkWmr-E9CXHU")
+                .addHeader("Cookie", Constants.COOKIE_VALUE)
                 .url(url)
                 .build();
         Call call = client.newCall(request);
