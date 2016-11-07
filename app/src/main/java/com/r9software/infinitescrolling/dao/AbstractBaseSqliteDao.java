@@ -11,7 +11,7 @@ public abstract class AbstractBaseSqliteDao {
         void onCursor(Cursor cursor);
 
     }
-    protected interface DbInsertInterface {
+    public interface DbInsertInterface {
         void onInsert(long id);
 
     }
@@ -33,6 +33,43 @@ public abstract class AbstractBaseSqliteDao {
             }
         }
 
+    }
+    SQLiteDatabase database;
+    protected void insertMultiple(String table,ContentValues val,int count, String nullCollumnHack, DbInsertInterface insertInterface){
+       if(database==null)
+        database = SQLiteDatabaseHelper.getInstance().open(true);
+        if (database != null) {
+            try {
+                long result = database.insert(table,nullCollumnHack,val);
+                if (result != 0) {
+                    if (insertInterface != null) {
+                        insertInterface.onInsert(result);
+                    }
+                }
+            } catch (Exception e) {
+                // most likely SQL syntax error: missing column, etc.
+                Log.e(getClass().getSimpleName(), e.getMessage());
+            } finally {
+                if(count==1){
+                database.close();
+                Log.d(getClass().getSimpleName(),"Closing database");
+                }
+            }
+        }
+
+    }
+    protected void update(String table, ContentValues values, String where, String[] args){
+        SQLiteDatabase database = SQLiteDatabaseHelper.getInstance().open(true);
+        if (database != null) {
+            try {
+                long result = database.update(table,values,where,args);
+            } catch (Exception e) {
+                // most likely SQL syntax error: missing column, etc.
+                Log.e(getClass().getSimpleName(), e.getMessage());
+            } finally {
+                database.close();
+            }
+        }
     }
     protected void query(String sql, String[] args, DbQueryInterface queryInterface) {
 
