@@ -54,7 +54,7 @@ public class PhotosSqliteImpl extends AbstractBaseSqliteDao {
         update("photos",val,"id=?",new String[]{String.valueOf(id)});
     }
     public List<Photo> getMediumPhotos() {
-        StringBuffer sql = new StringBuffer("Select id,size_code,url,width,height,quality,local_path,image_group from photos where size_code like \"%medium%\"");
+        StringBuffer sql = new StringBuffer("Select id,size_code,url,width,height,quality,local_path,image_group from photos where size_code like \"%medium\"");
         String[] args = new String[]{
 
         };
@@ -83,7 +83,7 @@ public class PhotosSqliteImpl extends AbstractBaseSqliteDao {
         return result;
     }
     public List<Photo> getMediumPhotos(int limit) {
-        StringBuffer sql = new StringBuffer("Select id,size_code,url,width,height,quality,local_path,image_group from photos where size_code like \"%medium%\"  ORDER BY id LIMIT ? ");
+        StringBuffer sql = new StringBuffer("Select id,size_code,url,width,height,quality,local_path,image_group from photos where size_code like \"%medium\"  ORDER BY id LIMIT ? ");
         String[] args = new String[]{
             String.valueOf(limit)
         };
@@ -112,7 +112,7 @@ public class PhotosSqliteImpl extends AbstractBaseSqliteDao {
         return result;
     }
     public List<Photo> getMediumPhotos(long id,int limit) {
-        StringBuffer sql = new StringBuffer("Select id,size_code,url,width,height,quality,local_path,image_group from photos where size_code like \"%medium%\"  AND id > ?  ORDER BY id LIMIT ?");
+        StringBuffer sql = new StringBuffer("Select id,size_code,url,width,height,quality,local_path,image_group from photos where size_code like \"%medium\"  AND id > ?  ORDER BY id LIMIT ?");
         String[] args = new String[]{
                 String.valueOf(id),
                 String.valueOf(limit)
@@ -142,7 +142,7 @@ public class PhotosSqliteImpl extends AbstractBaseSqliteDao {
         return result;
     }
     public Photo getLargeVersionOF(int group) {
-        StringBuffer sql = new StringBuffer("Select id,size_code,url,width,height,quality,local_path,image_group from photos where size_code like \"%large%\" and image_group= ?");
+        StringBuffer sql = new StringBuffer("Select id,size_code,url,width,height,quality,local_path,image_group from photos where size_code like \"%large\" and image_group= ?");
         String[] args = new String[]{
                 String.valueOf(group)
         };

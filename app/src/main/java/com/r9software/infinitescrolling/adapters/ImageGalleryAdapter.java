@@ -123,7 +123,7 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageViewHolder> {
             AlertDialog.Builder alertadd = new AlertDialog.Builder(
                     context);
             LayoutInflater factory = LayoutInflater.from(context);
-            final View localView = factory.inflate(R.layout.image_item, null);
+            final View localView = factory.inflate(R.layout.image_large_item, null);
             ((ImageView) localView.findViewById(R.id.imageView)).setImageBitmap(BitmapFactory.decodeFile(localPhoto.getLocalPath()));
             alertadd.setView(localView);
             alertadd.show();

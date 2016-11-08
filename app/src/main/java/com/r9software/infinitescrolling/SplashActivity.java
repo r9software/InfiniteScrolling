@@ -11,12 +11,17 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.google.gson.Gson;
 import com.r9software.infinitescrolling.dao.AbstractBaseSqliteDao;
 import com.r9software.infinitescrolling.dao.PhotosSqliteImpl;
 import com.r9software.infinitescrolling.dao.SQLiteDatabaseHelper;
 import com.r9software.infinitescrolling.model.Album;
 import com.r9software.infinitescrolling.model.Photo;
 import com.r9software.infinitescrolling.util.Constants;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -40,7 +45,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private Handler mHandler = new Handler();
     private static final String QUERY = Constants.QUERY;
-    private final PhotosSqliteImpl  dao = new PhotosSqliteImpl();
+    private final PhotosSqliteImpl dao = new PhotosSqliteImpl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +67,7 @@ public class SplashActivity extends AppCompatActivity {
                                   downloadData();
                               } else {
                                   //we already have data
-                                  Log.d(getClass().getSimpleName(),"Number of rows "+number);
+                                  Log.d(getClass().getSimpleName(), "Number of rows " + number);
                                   startMainActivity();
 
                               }
@@ -72,8 +77,8 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void startMainActivity() {
-        Intent mIntent=new Intent(SplashActivity.this, MainActivity.class);
-        mIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Intent mIntent = new Intent(SplashActivity.this, MainActivity.class);
+        mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(mIntent);
     }
 
@@ -100,7 +105,9 @@ public class SplashActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 String body = response.body().string();
                 if (response.code() == 200) {
+
                     processData(body);
+
                 }
             }
         });
@@ -108,38 +115,43 @@ public class SplashActivity extends AppCompatActivity {
 
     private void processData(String jsonResponse) {
         Log.d(getClass().getSimpleName(), jsonResponse);
-        Album mAlbum = new Album();
-        mAlbum.setAlbumID("UUID");
-        mAlbum.setName("My test Album");
-        dao.insertAlbum(mAlbum, new AbstractBaseSqliteDao.DbInsertInterface() {
-            @Override
-            public void onInsert(long id) {
-                //insert the pictures of the album
+        try {
+            JSONObject mJson = new JSONObject(jsonResponse);
+            final Album album = new Album();
+            album.setName(mJson.getJSONObject("data").getJSONObject("album").getString("name"));
+            album.setAlbumID(mJson.getJSONObject("data").getJSONObject("album").getString("id"));
+            final JSONArray records = mJson.getJSONObject("data").getJSONObject("album").getJSONObject("photos").getJSONArray("records");
+            mJson = null;
+            dao.insertAlbum(album, new AbstractBaseSqliteDao.DbInsertInterface() {
+                @Override
+                public void onInsert(long id) {
+                    //insert the pictures of the album
 
-                List<Photo> photos = new ArrayList<Photo>();
-                for (int x = 0; x < 200; x++) {
-                    Photo photo = new Photo();
-                    photo.setImageGroup(x);
-                    photo.setAlbumID(id);
-                    photo.setHeight(300);
-                    photo.setWidth(400);
-                    photo.setSizeCode("medium-2x");
-                    photo.setURL("http://img.lum.dolimg.com/v1/images/open-uri20150422-23749-4808u4_6c3bbc0d.jpeg?region=0%2C0%2C400%2C300");
-                    photos.add(photo);
-                    //large image
-                    photo = new Photo();
-                    photo.setImageGroup(x);
-                    photo.setAlbumID(id);
-                    photo.setHeight(720);
-                    photo.setWidth(1270);
-                    photo.setSizeCode("large-2x");
-                    photo.setURL("http://gruporivas.com.mx/wp-content/uploads/2016/06/msf_cars_ice_lst_characters.jpg");
-                    photos.add(photo);
+                    List<Photo> photos = new ArrayList<>();
+                    try {
+                        for (int x = 0; x < records.length(); x++) {
+                            JSONObject record = records.getJSONObject(x);
+                            JSONArray urlArray = record.getJSONArray("urls");
+                            for(int y=0; y < urlArray.length();y++){
+                                String size=urlArray.getJSONObject(y).getString("size_code");
+                                String url=urlArray.getJSONObject(y).getString("url");
+                                int width=urlArray.getJSONObject(y).getInt("width");
+                                int height=urlArray.getJSONObject(y).getInt("height");
+                                double quality=urlArray.getJSONObject(y).getDouble("quality");
+                                Photo mPhoto= new Photo(size,url,width,height,quality,x,id);
+                                photos.add(mPhoto);
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    dao.insertPhotos(photos);
+                    startMainActivity();
                 }
-                dao.insertPhotos(photos);
-                startMainActivity();
-            }
-        });
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void hideActionBar() {

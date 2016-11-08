@@ -8,15 +8,6 @@
     tools:context="com.r9software.infinitescrolling.MainActivity">
 
     <TextView
-        android:id="@+id/albumTitle"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Album Title" />
-    <TextView
         android:id="@+id/albumDescription"
         android:textSize="14sp"
         android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -24,7 +15,7 @@
         android:layout_below="@+id/albumTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Album Description" />
+        android:text="This is a small album" />
 
     <View
         android:layout_width="50dp"
@@ -52,6 +43,18 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:layout_gravity="top" />
     </android.support.v4.view.ViewPager>
+
+    <TextView
+        android:id="@+id/albumTitle"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Album Test"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

@@ -15,7 +15,16 @@ public class Photo {
     private String localPath;
     private int imageGroup;
     private long albumID;
-
+    public Photo(String sizecode,String url,int width,int height,double quality,int imageGroup,long album){
+        sizeCode=sizecode;
+        URL=url;
+        this.width=width;
+        this.height=height;
+        this.quality=quality;
+        this.imageGroup=imageGroup;
+        albumID=album;
+    }
+    public Photo(){}
     public void setID(long ID) {
         this.ID = ID;
     }

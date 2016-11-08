@@ -19,10 +19,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.initialisePaging();
+        this.initializePaging();
     }
 
-    private void initialisePaging() {
+    private void initializePaging() {
 
         List<Fragment> fragments = new Vector<Fragment>();
 
