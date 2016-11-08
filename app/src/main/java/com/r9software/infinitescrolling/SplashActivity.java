@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.google.gson.Gson;
 import com.r9software.infinitescrolling.dao.AbstractBaseSqliteDao;
 import com.r9software.infinitescrolling.dao.PhotosSqliteImpl;
 import com.r9software.infinitescrolling.dao.SQLiteDatabaseHelper;

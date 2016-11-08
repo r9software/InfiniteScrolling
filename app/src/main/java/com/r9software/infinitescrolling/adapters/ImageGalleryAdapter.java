@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -84,10 +85,10 @@ public class ImageGalleryAdapter extends RecyclerView.Adapter<ImageViewHolder> {
             FileOutputStream output = null;
 
             try {
-                String outputName = localPhoto.getID() + "_" + localPhoto.getImageGroup() + "_fullSize.png";
+                String outputName = URLUtil.guessFileName(localPhoto.getURL(), null, null);;
                 File file = new File(context.getCacheDir(), outputName);
-                if (!file.exists()) {
-                    file.getParentFile().mkdirs();
+                if (file.exists()) {
+                    //file.getParentFile().mkdirs();
                     URL url = new URL(localPhoto.getURL());
                     input = url.openConnection().getInputStream();
                     output = new FileOutputStream(file);

@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 
 import com.r9software.infinitescrolling.R;
 import com.r9software.infinitescrolling.adapters.ImageGalleryAdapter;
@@ -97,7 +98,7 @@ public class MyPicturesFragment extends Fragment {
 
             for (Photo mPhoto : localPhotos) {
                 try {
-                    String outputName = mPhoto.getID() + "_" + mPhoto.getImageGroup() + "_thumbnail.png";
+                    String outputName = URLUtil.guessFileName(mPhoto.getURL(), null, null);
                     File file = new File(getActivity().getApplicationContext().getCacheDir(), outputName);
                     if (!file.exists()) {
                         file.getParentFile().mkdirs();
