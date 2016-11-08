@@ -89,4 +89,3 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 .idea/*
-app/src/main/java/com/r9software/infinitescrolling/util/Constants.java
